@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# @author Jeffrey Böhm <jeffrey.boehm@hdnet.de>
+
+_get_plan_list () {
+	local cachefile
+	cachefile=${TMPDIR}bamboo-run_plans_cache
+	
+	find ${cachefile} -type f -mmin +360 -delete
+
+	if [ -r ${cachefile} ]
+	then
+		RETURN=$(cat ${cachefile})
+	else
+		RETURN=$(bamboo --columns Key -a getPlanList | sed -e s/\"//g | tail -n+3)
+		echo ${RETURN} > ${cachefile}
+	fi
+}
+
+_build_plan () {
+	bamboo -a queueBuild --build $1
+}
+
+case $1 in
+	list-plans)
+		_get_plan_list
+		echo ${RETURN}
+		;;
+	build-plan)
+		_build_plan $2
+		;;
+	*)
+		_build_plan $1
+esac

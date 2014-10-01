@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# @author Jeffrey Böhm <jeffrey.boehm@hdnet.de>
+
+_bamboo-run () {
+	local cur prev opts
+	COMPREPLY=()
+	cur="${COMP_WORDS[COMP_CWORD]}"
+	prev="${COMP_WORDS[COMP_CWORD-1]}"
+	opts="$(bamboo-run list-plans)"
+
+	COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+	return 0
+}
+
+complete -F _bamboo-run bamboo-run
