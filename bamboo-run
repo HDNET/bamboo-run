@@ -6,7 +6,10 @@ _get_plan_list () {
 	local cachefile
 	cachefile=${TMPDIR}bamboo-run_plans_cache
 	
-	find ${cachefile} -type f -mmin +360 -delete
+	if [ -r ${cachefile} ]
+	then
+		find ${cachefile} -type f -mmin +360 -delete
+	fi
 
 	if [ -r ${cachefile} ]
 	then
