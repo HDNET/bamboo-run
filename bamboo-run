@@ -8,7 +8,7 @@ _get_plan_list () {
 	
 	if [ -r ${cachefile} ]
 	then
-		find ${cachefile} -type f -mmin +360 -delete
+		find ${cachefile} -mindepth 1 -type f -mmin +360 -delete
 	fi
 
 	if [ -r ${cachefile} ]
